@@ -1,1 +1,13 @@
 .claude/settings.local.json
+
+# Xcode
+*.xcuserstate
+xcuserdata/
+
+# API
+api/node_modules/
+api/.env
+api/.env.local
+
+# OS
+.DS_Store

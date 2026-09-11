@@ -11,7 +11,7 @@ AI-powered travel planner for iOS — plan structured or unstructured trips with
 
 ## Commands
 - Install: `cd api && npm install`
-- Dev/run: Open `Redeye.xcodeproj` in Xcode; `cd api && npm run dev`
+- Dev/run: Open `Redeye/Redeye.xcodeproj` in Xcode; `cd api && npm run dev`
 - Test: Xcode test runner (Cmd+U); `cd api && npm test`
 - Lint/typecheck: SwiftLint (iOS); `cd api && npx tsc --noEmit`
 - Build: Xcode archive (iOS); `cd api && npm run build`

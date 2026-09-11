@@ -1,6 +1,7 @@
 # Redeye — Technical Design
 
 **Last updated:** 2026-09-11
+**LLD:** [`2026-09-11-technical-design-lld.md`](2026-09-11-technical-design-lld.md)
 
 ## Problem
 
