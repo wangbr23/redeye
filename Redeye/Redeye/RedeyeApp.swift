@@ -1,10 +1,3 @@
-//
-//  RedeyeApp.swift
-//  Redeye
-//
-//  Created by Bradley Wang on 9/11/26.
-//
-
 import SwiftUI
 import SwiftData
 
@@ -12,7 +5,9 @@ import SwiftData
 struct RedeyeApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            Trip.self,
+            TripDay.self,
+            Activity.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 

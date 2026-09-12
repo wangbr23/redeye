@@ -9,7 +9,7 @@ Task format: `- [ ] \`T<n>\` <description> — <manual|agent>[, depends-on: T<a>
 - [x] `T1` Create Xcode project (SwiftUI app target, iOS 17+, bundle ID, signing) — manual
 - [x] `T2` Set up Supabase project, create initial schema migration (trips, trip_days, activities tables, RLS policies, updated_at trigger) — manual, design: docs/designs/2026-09-11-technical-design-lld.md
 - [x] `T3` Scaffold Next.js API project in `api/` with TypeScript, install dependencies (supabase-js, ai, zod) — agent, complexity: simple
-- [ ] `T4` Define SwiftData models (Trip, TripDay, Activity, SyncStatus, enums) with relationships and invariants — agent, complexity: complex, depends-on: T1, design: docs/designs/2026-09-11-technical-design-lld.md
+- [x] `T4` Define SwiftData models (Trip, TripDay, Activity, SyncStatus, enums) with relationships and invariants — agent, complexity: complex, depends-on: T1, design: docs/designs/2026-09-11-technical-design-lld.md
 - [ ] `T5` Define Zod validation schemas in `api/lib/schemas.ts` (CreateTripInput, UpdateTripInput, CreateActivityInput, UpdateActivityInput, ReorderInput, AI output schemas) — agent, complexity: simple, depends-on: T3, design: docs/designs/2026-09-11-technical-design-lld.md
 - [ ] `T6` Create Supabase client helpers in `api/lib/supabase.ts` and auth middleware in `api/lib/auth.ts` — agent, complexity: simple, depends-on: T3
 - [ ] `T7` Create APIClient service (HTTP wrapper with JWT attachment, request/response encoding, error mapping) — agent, complexity: simple, depends-on: T1, T5
