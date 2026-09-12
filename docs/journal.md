@@ -46,3 +46,16 @@ Created `Redeye/Redeye/Services/APIClient.swift` — the iOS HTTP client that al
 Design note: `tokenProvider` is a closure rather than a direct AuthService dependency — avoids a circular reference and lets tests inject tokens without mocking the full auth stack. The 401-retry-with-refresh logic (from the LLD's failure table) will be added when AuthService (T8) exists.
 
 Build verified green on iPhone 17 simulator.
+
+## 2026-09-12 — T8: AuthService
+
+Created `Redeye/Redeye/Services/AuthService.swift` — authentication service using direct HTTP calls to Supabase Auth REST API. No external SDK dependency; uses the Security framework for Keychain and AuthenticationServices for Apple Sign In.
+
+- **AuthSession** — Codable struct holding accessToken, refreshToken, expiresAt, userId. Persisted to Keychain.
+- **KeychainHelper** — private enum wrapping Security framework for save/load/delete of the session. Uses `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly` for offline access.
+- **AuthError** — error enum covering invalidCredentials, emailTaken, networkError, serverError, noSession, appleSignInFailed, keychainError.
+- **AuthService** (`@Observable`) — init reads Keychain for stored session. Publishes `isAuthenticated` and `currentUserId`. Methods: `signInWithEmail`, `signUpWithEmail`, `signInWithApple` (takes `ASAuthorizationAppleIDCredential`, sends id_token to Supabase), `signOut`, `refreshTokenIfNeeded` (returns valid JWT, 30s expiry buffer, signs out if refresh fails), `currentAccessToken`.
+
+Design note: chose direct HTTP to Supabase Auth REST endpoints (`/auth/v1/token`, `/auth/v1/signup`) over adding the full Supabase Swift SDK — keeps the dependency footprint minimal since APIClient already handles all data HTTP. The `currentAccessToken()` method is what APIClient's `tokenProvider` closure will call (wired in T11). Apple Sign In sends the id_token to Supabase's `id_token` grant type per their OIDC provider support.
+
+Build verified green on iPhone 17 simulator.

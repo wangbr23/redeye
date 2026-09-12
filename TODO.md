@@ -13,7 +13,7 @@ Task format: `- [ ] \`T<n>\` <description> — <manual|agent>[, depends-on: T<a>
 - [x] `T5` Define Zod validation schemas in `api/lib/schemas.ts` (CreateTripInput, UpdateTripInput, CreateActivityInput, UpdateActivityInput, ReorderInput, AI output schemas) — agent, complexity: simple, depends-on: T3, design: docs/designs/2026-09-11-technical-design-lld.md
 - [x] `T6` Create Supabase client helpers in `api/lib/supabase.ts` and auth middleware in `api/lib/auth.ts` — agent, complexity: simple, depends-on: T3
 - [x] `T7` Create APIClient service (HTTP wrapper with JWT attachment, request/response encoding, error mapping) — agent, complexity: simple, depends-on: T1, T5
-- [ ] `T8` Create AuthService (Supabase Auth, Keychain storage, token refresh, Apple Sign In) — agent, complexity: complex, depends-on: T1
+- [x] `T8` Create AuthService (Supabase Auth, Keychain storage, token refresh, Apple Sign In) — agent, complexity: complex, depends-on: T1
 - [ ] `T9` Create NetworkMonitor service (NWPathMonitor wrapper, publishes isOnline) — agent, complexity: simple, depends-on: T1
 - [ ] `T10` Create auth UI (AuthGateView, login/signup form, AppleSignInButton) — agent, complexity: simple, depends-on: T8
 - [ ] `T11` Wire up app entry point (RedeyeApp.swift: ModelContainer, service injection, AuthGateView → ContentView with tab bar) — agent, complexity: simple, depends-on: T4, T8, T9, T10
