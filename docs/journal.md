@@ -28,3 +28,7 @@ Removed Xcode-generated `Item.swift`. Updated `RedeyeApp.swift` to register Trip
 ## 2026-09-12 — T5: Zod validation schemas
 
 Created `api/lib/schemas.ts` with all Zod schemas from the LLD: CreateTripInput, UpdateTripInput, CreateActivityInput, UpdateActivityInput, ReorderInput, plus AI generation output schemas (GeneratedStructuredDay, GeneratedUnstructuredGroup, StructuredItinerary, UnstructuredItinerary). Exported inferred TypeScript types for request inputs. Used Zod 4 API (`gte`/`lte` instead of `min`/`max` on numbers, `z.record(z.string(), z.unknown())` for preferences). Typecheck green.
+
+## 2026-09-12 — T6: Supabase client helpers and auth middleware
+
+Fleshed out `api/lib/supabase.ts` and `api/lib/auth.ts` from the T3 stubs. Changes from stubs: added explicit `SupabaseClient` return type on `createSupabaseClient()`, exported `AuthResult` discriminated union type from auth, and `authenticateRequest()` now returns a ready-to-use RLS-scoped `supabase` client alongside `userId` and `token` — so route handlers get auth + client in one call instead of two steps. Typecheck green.
