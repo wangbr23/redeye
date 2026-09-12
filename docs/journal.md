@@ -32,3 +32,17 @@ Created `api/lib/schemas.ts` with all Zod schemas from the LLD: CreateTripInput,
 ## 2026-09-12 — T6: Supabase client helpers and auth middleware
 
 Fleshed out `api/lib/supabase.ts` and `api/lib/auth.ts` from the T3 stubs. Changes from stubs: added explicit `SupabaseClient` return type on `createSupabaseClient()`, exported `AuthResult` discriminated union type from auth, and `authenticateRequest()` now returns a ready-to-use RLS-scoped `supabase` client alongside `userId` and `token` — so route handlers get auth + client in one call instead of two steps. Typecheck green.
+
+## 2026-09-12 — T7: APIClient service
+
+Created `Redeye/Redeye/Services/APIClient.swift` — the iOS HTTP client that all ViewModels and SyncService will use to talk to the API. Contains:
+
+- **Response DTOs** (`TripDTO`, `TripDayDTO`, `ActivityDTO`, `PlaceResultDTO`, `PlaceDetailDTO`) — Codable structs with `CodingKeys` mapping snake_case JSON to Swift conventions.
+- **Request DTOs** (`CreateTripDTO`, `UpdateTripDTO`, `CreateActivityDTO`, `UpdateActivityDTO`, `ReorderItemDTO`) — Encodable structs matching the Zod schemas from T5.
+- **AnyCodable** — lightweight type-erased Codable wrapper for the `preferences` JSON field.
+- **APIError** enum — covers unauthorized, notFound, validationError, serverError, networkError, decodingError. Parses error messages from the API's `{ error: string }` response shape.
+- **APIClient** class (`@Observable`) — generic request builder with `tokenProvider` closure for JWT injection (will be wired to AuthService in T11). Methods match the LLD's service protocol: `fetchTrips`, `createTrip`, `updateTrip`, `deleteTrip`, `createActivity`, `updateActivity`, `deleteActivity`, `reorderActivities`, `searchPlaces`, `placeDetail`. SSE streaming (`generateItinerary`) deferred to T27 (SSEClient).
+
+Design note: `tokenProvider` is a closure rather than a direct AuthService dependency — avoids a circular reference and lets tests inject tokens without mocking the full auth stack. The 401-retry-with-refresh logic (from the LLD's failure table) will be added when AuthService (T8) exists.
+
+Build verified green on iPhone 17 simulator.
