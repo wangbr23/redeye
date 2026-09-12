@@ -24,3 +24,7 @@ Created SwiftData models in `Redeye/Redeye/Models/`:
 - `ActivityCategory.swift` — enum with displayName and systemImage (SF Symbol) for each category
 
 Removed Xcode-generated `Item.swift`. Updated `RedeyeApp.swift` to register Trip/TripDay/Activity in the ModelContainer schema. Updated `ContentView.swift` to stub the three-tab layout (Trips/Map/Nearby) and remove Item references. Preferences stored as `preferencesData: Data?` (JSON-encoded) since SwiftData doesn't support `[String: Any]` directly. Build verified green on iPhone 17 simulator.
+
+## 2026-09-12 — T5: Zod validation schemas
+
+Created `api/lib/schemas.ts` with all Zod schemas from the LLD: CreateTripInput, UpdateTripInput, CreateActivityInput, UpdateActivityInput, ReorderInput, plus AI generation output schemas (GeneratedStructuredDay, GeneratedUnstructuredGroup, StructuredItinerary, UnstructuredItinerary). Exported inferred TypeScript types for request inputs. Used Zod 4 API (`gte`/`lte` instead of `min`/`max` on numbers, `z.record(z.string(), z.unknown())` for preferences). Typecheck green.
