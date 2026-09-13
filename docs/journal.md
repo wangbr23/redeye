@@ -63,3 +63,13 @@ Build verified green on iPhone 17 simulator.
 ## 2026-09-13 — T9: NetworkMonitor service
 
 Created `Redeye/Redeye/Services/NetworkMonitor.swift` — `@Observable` class wrapping `NWPathMonitor`. Publishes `isOnline` (Bool), updated on the main thread via `pathUpdateHandler`. Monitor runs on a dedicated serial dispatch queue; cancelled in `deinit`. Build verified green on iPhone 17 simulator.
+
+## 2026-09-13 — T10: Auth UI
+
+Created three files for the auth UI layer:
+
+- `ViewModels/AuthViewModel.swift` — `@Observable` with email/password fields, `isSignUp` toggle, `isLoading`/`errorMessage` state. `submit()` delegates to AuthService sign-in or sign-up. `signInWithApple()` takes `ASAuthorizationAppleIDCredential` and forwards to AuthService.
+- `Views/Auth/AppleSignInButton.swift` — thin wrapper around SwiftUI's `SignInWithAppleButton`, requests email+fullName scopes, surfaces credential/error via closures.
+- `Views/Auth/AuthGateView.swift` — top-level gate: shows `ContentView` when `authService.isAuthenticated`, otherwise shows `LoginView`. LoginView has email/password form, submit button, Apple Sign In, and sign-up/sign-in toggle.
+
+Build verified green on iPhone 17 simulator.

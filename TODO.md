@@ -15,7 +15,7 @@ Task format: `- [ ] \`T<n>\` <description> — <manual|agent>[, depends-on: T<a>
 - [x] `T7` Create APIClient service (HTTP wrapper with JWT attachment, request/response encoding, error mapping) — agent, complexity: simple, depends-on: T1, T5
 - [x] `T8` Create AuthService (Supabase Auth, Keychain storage, token refresh, Apple Sign In) — agent, complexity: complex, depends-on: T1
 - [x] `T9` Create NetworkMonitor service (NWPathMonitor wrapper, publishes isOnline) — agent, complexity: simple, depends-on: T1
-- [ ] `T10` Create auth UI (AuthGateView, login/signup form, AppleSignInButton) — agent, complexity: simple, depends-on: T8
+- [x] `T10` Create auth UI (AuthGateView, login/signup form, AppleSignInButton) — agent, complexity: simple, depends-on: T8
 - [ ] `T11` Wire up app entry point (RedeyeApp.swift: ModelContainer, service injection, AuthGateView → ContentView with tab bar) — agent, complexity: simple, depends-on: T4, T8, T9, T10
 
 ## Phase 2: Trip CRUD
