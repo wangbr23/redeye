@@ -59,3 +59,7 @@ Created `Redeye/Redeye/Services/AuthService.swift` — authentication service us
 Design note: chose direct HTTP to Supabase Auth REST endpoints (`/auth/v1/token`, `/auth/v1/signup`) over adding the full Supabase Swift SDK — keeps the dependency footprint minimal since APIClient already handles all data HTTP. The `currentAccessToken()` method is what APIClient's `tokenProvider` closure will call (wired in T11). Apple Sign In sends the id_token to Supabase's `id_token` grant type per their OIDC provider support.
 
 Build verified green on iPhone 17 simulator.
+
+## 2026-09-13 — T9: NetworkMonitor service
+
+Created `Redeye/Redeye/Services/NetworkMonitor.swift` — `@Observable` class wrapping `NWPathMonitor`. Publishes `isOnline` (Bool), updated on the main thread via `pathUpdateHandler`. Monitor runs on a dedicated serial dispatch queue; cancelled in `deinit`. Build verified green on iPhone 17 simulator.
