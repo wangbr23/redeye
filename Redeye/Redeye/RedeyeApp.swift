@@ -18,10 +18,27 @@ struct RedeyeApp: App {
         }
     }()
 
+    @State private var authService = AuthService(
+        supabaseURL: AppConfig.supabaseURL,
+        supabaseAnonKey: AppConfig.supabaseAnonKey
+    )
+    @State private var apiClient = APIClient(baseURL: AppConfig.apiBaseURL)
+    @State private var networkMonitor = NetworkMonitor()
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            AuthGateView(authService: authService)
+                .environment(authService)
+                .environment(apiClient)
+                .environment(networkMonitor)
+                .onAppear { wireServices() }
         }
         .modelContainer(sharedModelContainer)
+    }
+
+    private func wireServices() {
+        apiClient.tokenProvider = { [authService] in
+            try await authService.currentAccessToken()
+        }
     }
 }

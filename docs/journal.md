@@ -73,3 +73,11 @@ Created three files for the auth UI layer:
 - `Views/Auth/AuthGateView.swift` — top-level gate: shows `ContentView` when `authService.isAuthenticated`, otherwise shows `LoginView`. LoginView has email/password form, submit button, Apple Sign In, and sign-up/sign-in toggle.
 
 Build verified green on iPhone 17 simulator.
+
+## 2026-09-13 — T11: Wire up app entry point
+
+Rewired `RedeyeApp.swift` to create and inject all services: `AuthService`, `APIClient`, `NetworkMonitor`. Root view is now `AuthGateView` (gates auth → `ContentView`). Services injected via SwiftUI `.environment()` so deeper views can access them with `@Environment`. `APIClient.tokenProvider` wired to `AuthService.currentAccessToken()` in `onAppear`.
+
+Created `AppConfig.swift` — placeholder enum with `supabaseURL`, `supabaseAnonKey`, and `apiBaseURL` constants. These need real values before the app can connect to Supabase.
+
+Phase 1 is now complete (T1–T11). Build verified green on iPhone 17 simulator.
