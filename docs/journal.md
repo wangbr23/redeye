@@ -81,3 +81,12 @@ Rewired `RedeyeApp.swift` to create and inject all services: `AuthService`, `API
 Created `AppConfig.swift` — placeholder enum with `supabaseURL`, `supabaseAnonKey`, and `apiBaseURL` constants. These need real values before the app can connect to Supabase.
 
 Phase 1 is now complete (T1–T11). Build verified green on iPhone 17 simulator.
+
+## 2026-09-13 — T12: API route GET/POST /api/trips
+
+Created `api/app/api/trips/route.ts` with two handlers:
+
+- **GET** — fetches trips with nested `trip_days` and `activities` via Supabase join select. Optional `?status=active|archived` filter. Ordered by `created_at` descending.
+- **POST** — validates body against `CreateTripInput` Zod schema, checks `endDate >= startDate`, inserts trip with `user_id` from auth, then generates `trip_days` rows for each date in range if `mode == "structured"` (per INV-3). Returns 201 with the trip + generated days + empty activities array.
+
+RLS handles user scoping — the authenticated Supabase client from `authenticateRequest()` already carries the user's JWT. Typecheck green.
