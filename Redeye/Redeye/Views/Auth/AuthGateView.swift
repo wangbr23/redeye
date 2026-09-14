@@ -4,8 +4,8 @@ struct AuthGateView: View {
     let authService: AuthService
 
     var body: some View {
-        if authService.isAuthenticated {
-            ContentView()
+        if authService.isAuthenticated, let userId = authService.currentUserId {
+            ContentView(userId: userId)
         } else {
             LoginView(viewModel: AuthViewModel(authService: authService))
         }

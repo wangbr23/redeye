@@ -22,7 +22,7 @@ Task format: `- [ ] \`T<n>\` <description> — <manual|agent>[, depends-on: T<a>
 
 - [x] `T12` API route: GET/POST /api/trips (list with status filter, create with trip_day generation) — agent, complexity: simple, depends-on: T5, T6
 - [x] `T13` API route: GET/PATCH/DELETE /api/trips/[id] (detail with nested days+activities, update with date-change day regeneration, delete with cascade) — agent, complexity: complex, depends-on: T12
-- [ ] `T14` TripListView + TripListViewModel (active/archived sections, archive/delete with confirmation) — agent, complexity: simple, depends-on: T4, T7, T11, design: docs/designs/2026-09-11-technical-design-lld.md
+- [x] `T14` TripListView + TripListViewModel (active/archived sections, archive/delete with confirmation) — agent, complexity: simple, depends-on: T4, T7, T11, design: docs/designs/2026-09-11-technical-design-lld.md
 - [ ] `T15` CreateTripView + CreateTripViewModel (form with destination, dates, mode picker, optional home base + preferences, trip_day generation on save) — agent, complexity: simple, depends-on: T14
 - [ ] `T16` EditTripView + EditTripViewModel (edit fields, date change with day regeneration, mode switch logic) — agent, complexity: complex, depends-on: T14, design: docs/designs/2026-09-11-technical-design-lld.md
 

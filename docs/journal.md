@@ -117,3 +117,16 @@ After a code review of the T13 route (`sideye`), addressed the accepted findings
 - Reviewed but not changed (deferred): N+1 per-row day updates and the full-atomicity fix both need the Postgres RPC approach — folded into T46.
 
 All checks pass: `npm test` (19 tests), `npx tsc --noEmit`, `npm run lint`.
+
+## 2026-09-14 — T14: trip list
+
+Created the SwiftData-backed trip list UI and its ViewModel:
+
+- `TripListViewModel` groups trips into active and archived sections for the authenticated user and excludes pending-deletion tombstones.
+- Archiving updates the local trip status, timestamp, and sync state without blocking on the network.
+- Deletion requires confirmation. Never-synced trips are removed immediately; server-backed trips are marked `.pendingDelete` and hidden until the future SyncService removes them after a successful API delete.
+- `TripListView` shows an empty state and separate active/archived sections with non-full-swipe archive and delete actions.
+- `TripRowView` displays each trip's title, destination, dates, and planning mode.
+- Replaced the Trips tab placeholder with `TripListView` and passed the authenticated user ID explicitly from `AuthGateView`.
+
+Self-review found no correctness or security issues. The iPhone 17 simulator build passes. SwiftLint could not run because it is not installed, and automated ViewModel tests remain unavailable because the Xcode project has no test target.

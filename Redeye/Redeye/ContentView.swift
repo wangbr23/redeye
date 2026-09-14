@@ -2,9 +2,11 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
+    let userId: String
+
     var body: some View {
         TabView {
-            Text("Trips")
+            TripListView(userId: userId)
                 .tabItem {
                     Label("Trips", systemImage: "suitcase.fill")
                 }
@@ -23,6 +25,6 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    ContentView(userId: "preview-user")
         .modelContainer(for: [Trip.self, TripDay.self, Activity.self], inMemory: true)
 }
