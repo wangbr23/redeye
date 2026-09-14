@@ -21,7 +21,7 @@ Task format: `- [ ] \`T<n>\` <description> — <manual|agent>[, depends-on: T<a>
 ## Phase 2: Trip CRUD
 
 - [x] `T12` API route: GET/POST /api/trips (list with status filter, create with trip_day generation) — agent, complexity: simple, depends-on: T5, T6
-- [ ] `T13` API route: GET/PATCH/DELETE /api/trips/[id] (detail with nested days+activities, update with date-change day regeneration, delete with cascade) — agent, complexity: complex, depends-on: T12
+- [x] `T13` API route: GET/PATCH/DELETE /api/trips/[id] (detail with nested days+activities, update with date-change day regeneration, delete with cascade) — agent, complexity: complex, depends-on: T12
 - [ ] `T14` TripListView + TripListViewModel (active/archived sections, archive/delete with confirmation) — agent, complexity: simple, depends-on: T4, T7, T11, design: docs/designs/2026-09-11-technical-design-lld.md
 - [ ] `T15` CreateTripView + CreateTripViewModel (form with destination, dates, mode picker, optional home base + preferences, trip_day generation on save) — agent, complexity: simple, depends-on: T14
 - [ ] `T16` EditTripView + EditTripViewModel (edit fields, date change with day regeneration, mode switch logic) — agent, complexity: complex, depends-on: T14, design: docs/designs/2026-09-11-technical-design-lld.md
@@ -72,3 +72,7 @@ Task format: `- [ ] \`T<n>\` <description> — <manual|agent>[, depends-on: T<a>
 - [ ] `T43` Dynamic Type support (verify text scales, fix any fixed-size fonts) — agent, complexity: simple, depends-on: T42
 - [ ] `T44` One-handed usability pass (verify primary actions reachable with thumb, FAB placement) — manual, depends-on: T42
 - [ ] `T45` TestFlight build and distribution to friends — manual, depends-on: T40, T42
+
+## Follow-ups
+
+- [ ] `T46` Make trip PATCH atomic + batch day renumber via Postgres RPC (single transaction wrapping trip update + detach/delete/insert/renumber, one UPDATE with window function instead of per-row loops) — agent, complexity: complex, depends-on: T13

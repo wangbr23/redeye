@@ -90,3 +90,30 @@ Created `api/app/api/trips/route.ts` with two handlers:
 - **POST** — validates body against `CreateTripInput` Zod schema, checks `endDate >= startDate`, inserts trip with `user_id` from auth, then generates `trip_days` rows for each date in range if `mode == "structured"` (per INV-3). Returns 201 with the trip + generated days + empty activities array.
 
 RLS handles user scoping — the authenticated Supabase client from `authenticateRequest()` already carries the user's JWT. Typecheck green.
+
+## 2026-09-13 — T13: API route GET/PATCH/DELETE /api/trips/[id]
+
+Created `api/app/api/trips/[id]/route.ts` with three handlers:
+
+- **GET** — fetches single trip with nested `trip_days` and `activities` via Supabase join select. Returns 404 (PGRST116) or 500.
+- **PATCH** — validates body against `UpdateTripInput`, builds partial update payload from provided fields. Handles three complex cases beyond field updates:
+  - Structured → unstructured mode switch (§4.6a): nulls `trip_day_id`/`start_time`/`end_time` on all activities, deletes all `trip_days`.
+  - Unstructured → structured mode switch (§4.6b): generates `trip_days` for the date range; activities remain unassigned.
+  - Date change in structured mode (§4.13): diffs old vs new date ranges, detaches activities from removed days (become unassigned, not deleted), inserts new days, renumbers all days sequentially per INV-3.
+- **DELETE** — deletes trip, returns 204. Cascade to days/activities handled by DB-level `ON DELETE CASCADE`.
+
+Route context params typed as `Promise<{ id: string }>` per Next.js 15 convention. Typecheck green.
+
+## 2026-09-14 — T13 follow-up: tests + PATCH ordering fix
+
+After a code review of the T13 route (`sideye`), addressed the accepted findings:
+
+- **PATCH ordering** — the trip field `.update()` now runs *after* day regeneration succeeds (was before). Previously a regeneration failure mutated the trip row (dates/mode) then returned 500, and a client retry would see `datesChanged == false` and skip regeneration, leaving stale days permanently. Now a regeneration failure leaves the trip row untouched so a retry re-runs it. Full atomicity (update + regeneration in one transaction) still needs a Postgres RPC — tracked as T46 in TODO.md.
+- **Vitest bootstrap** — added `vitest` (v5) + `vite` devDeps, `npm test` script, `vitest.config.mts` with `@/` alias. No test infra existed before.
+- **Tests added**:
+  - `api/lib/trip-days.test.ts` — `generateTripDays` (range, month crossing, empty) and `regenerateDaysForDateChange` (remove, extend, full shift, detach-before-delete ordering, no-op).
+  - `api/app/api/trips/[id]/route.test.ts` — GET 200/404/401, PATCH field update, both mode switches, date-change regeneration, regeneration-failure-keeps-trip-unchanged, 400 invalid dates, 404, DELETE 204.
+  - `api/test/helpers/mock-supabase.ts` — in-memory fake supabase client (chainable query builder, nested select, call recording, error injection).
+- Reviewed but not changed (deferred): N+1 per-row day updates and the full-atomicity fix both need the Postgres RPC approach — folded into T46.
+
+All checks pass: `npm test` (19 tests), `npx tsc --noEmit`, `npm run lint`.
